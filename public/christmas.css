@@ -1,0 +1,103 @@
+/* Christmas / Winter theme styles */
+:root{
+  --bg1:#031738;
+  --bg2:#0b3b5a;
+  --accent:#ffd166;
+  --tree:#0b6b2b;
+  --snow:#ffffffcc;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter, system-ui, Arial, sans-serif;color:var(--snow)}
+
+.sky{
+  min-height:100vh;
+  background: radial-gradient(ellipse at 30% 10%, rgba(255,255,255,0.04) 0%, transparent 20%), linear-gradient(180deg,var(--bg1) 0%, var(--bg2) 60%, #071a2a 100%);
+  overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:3rem 1rem;
+}
+
+.header{ text-align:center; margin-top:0.5rem }
+.header h1{font-size:clamp(2rem,4vw,4rem);margin:0 0 0.25rem;color:#fff;text-shadow:0 4px 20px rgba(0,0,0,0.6)}
+.header .sub{margin:0;color:#d8eef9;opacity:0.9}
+
+/* ensure nav sits above decorative pseudo-elements */
+.nav{position:relative;z-index:2}
+
+/* village / clickable houses */
+.village{display:flex;gap:18px;justify-content:center;align-items:flex-end;margin:1.6rem 0;z-index:2;position:relative}
+.village a{display:block;text-decoration:none}
+.house{width:110px;height:110px;background:linear-gradient(180deg,#2b6b3a,#154d2a);border-radius:8px;position:relative;box-shadow:0 8px 20px rgba(2,6,23,0.6);cursor:pointer;transition:transform .18s ease,filter .18s}
+.house:hover{transform:translateY(-10px) scale(1.04);filter:brightness(1.08)}
+.house .roof{position:absolute;left:50%;transform:translateX(-50%);top:-28px;width:0;height:0;border-left:60px solid transparent;border-right:60px solid transparent;border-bottom:36px solid #7b2a2a}
+.house .door{position:absolute;left:50%;transform:translateX(-50%);bottom:14px;width:30px;height:42px;background:#3a1f06;border-radius:4px;box-shadow:inset 0 -4px 6px rgba(0,0,0,0.25)}
+.house .label{position:absolute;left:50%;transform:translateX(-50%);bottom:-28px;color:#fff;font-weight:700;background:rgba(0,0,0,0.25);padding:6px 8px;border-radius:8px;font-size:0.9rem}
+
+/* Wack-a-mole styles */
+.game{max-width:760px;margin:1.2rem auto 2.4rem;background:rgba(255,255,255,0.03);padding:16px;border-radius:12px;text-align:center}
+.game-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:420px;margin:0 auto}
+.hole{height:110px;background:linear-gradient(180deg,#0e2b3a,#08324a);border-radius:14px;position:relative;overflow:hidden;cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px}
+.mole{width:72px;height:72px;background:radial-gradient(circle at 30% 30%, #a3624f 0%, #7a3b2b 60%);border-radius:50%;position:absolute;left:50%;transform:translate(-50%,120%);bottom:6px;transition:transform .14s cubic-bezier(.2,.9,.2,1),box-shadow .08s ease}
+.mole::before{content:'';position:absolute;top:10%;left:50%;transform:translateX(-50%);width:52px;height:36px;background:#2b1b12;border-radius:18px 18px 12px 12px}
+.mole::after{content:'';position:absolute;top:26%;left:50%;transform:translateX(-50%);width:8px;height:8px;background:#fff;border-radius:50%;box-shadow:18px 0 #fff}
+.mole.up{transform:translate(-50%,0%);box-shadow:0 12px 20px rgba(0,0,0,0.5)}
+.note{color:#e6f7ff;opacity:0.9;margin-top:10px}
+
+/* timer display */
+.timer{font-weight:800;color:var(--accent);margin-left:14px}
+
+.stage{display:flex;flex:1;align-items:center;justify-content:center;width:100%;max-width:960px}
+
+.tree-area{position:relative;width:320px;height:320px;display:flex;align-items:flex-end;justify-content:center}
+
+.tree{position:relative;display:flex;flex-direction:column;align-items:center}
+.star{color:var(--accent);font-size:1.6rem;margin-bottom:-6px;text-shadow:0 2px 8px rgba(0,0,0,0.6)}
+
+.leaf{width:0;height:0;border-left:90px solid transparent;border-right:90px solid transparent;border-bottom:100px solid var(--tree);margin:0 auto;transform-origin:center}
+.leaf-1{border-bottom-color:#0d7a32;transform:translateY(6px)}
+.leaf-2{border-bottom-width:82px;border-left-width:75px;border-right-width:75px;margin-top:-28px}
+.leaf-3{border-bottom-width:64px;border-left-width:60px;border-right-width:60px;margin-top:-26px}
+
+.trunk{width:40px;height:48px;background:#5b2d10;border-radius:6px;margin-top:8px}
+
+.gifts{position:absolute;left:50%;transform:translateX(-50%);bottom:8px;display:flex;gap:10px}
+.gift{width:48px;height:36px;border-radius:6px;box-shadow:0 6px 14px rgba(2,6,23,0.6)}
+.g1{background:#f94144}
+.g2{background:#ffd166}
+.g3{background:#90be6d}
+
+.message{position:relative;margin-left:2rem}
+.message p{background:linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));padding:12px 18px;border-radius:10px;color:#eaf6ff}
+
+.footer{font-size:0.9rem;opacity:0.8;padding:1rem 0}
+
+/* Snow animation */
+.snow{position:fixed;left:0;top:0;right:0;bottom:0;pointer-events:none}
+.flake{position:absolute;left:calc(100% * var(--r, 0.1));top:-10vh;width:8px;height:8px;background:var(--snow);border-radius:50%;opacity:0.9;filter:blur(0.3px);transform:translateY(-10vh);}
+
+/* generate positions and vary speed using inline --i */
+.flake{left:calc((100% / 16) * var(--i));
+  transform:translateY(-20vh) translateX(0);
+  animation:fall calc(8s + (var(--i) * 0.6s)) linear infinite;
+  opacity:calc(0.5 + (var(--i) * 0.04));
+  width:calc(6px + (var(--i) * 0.2px));
+  height:calc(6px + (var(--i) * 0.2px));
+}
+
+@keyframes fall{
+  0%{transform:translateY(-20vh) translateX(0);opacity:0}
+  10%{opacity:0.9}
+  100%{transform:translateY(120vh) translateX(40px);opacity:0.9}
+}
+
+/* small twinkling stars */
+@media (min-width:700px){
+  .sky::before{content:"";position:absolute;inset:0;background-image:radial-gradient(#ffffff10 1px, transparent 1px);background-size:120px 120px;opacity:0.15;mix-blend-mode:screen;pointer-events:none}
+}
+
+/* responsive tweaks */
+@media (max-width:520px){
+  .tree-area{width:220px;height:220px}
+  .message{display:none}
+}

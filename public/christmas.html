@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Holiday Routes — Happy Holidays</title>
+  <link rel="stylesheet" href="christmas.css">
+  <style>
+    .nav{margin-top:12px;display:flex;gap:10px;justify-content:center}
+    .btn{background:var(--accent);color:#07132a;padding:8px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:600;text-decoration:none}
+    .btn.secondary{background:#fff1cc}
+  </style>
+</head>
+<body>
+  <div class="sky">
+    <div class="header">
+      <h1>Happy Holidays</h1>
+      <p class="sub">Wishing you warm journeys and snowy smiles</p>
+      <div class="nav">
+        <a class="btn" href="/christmas-facts">Christmas Fun Facts</a>
+        <button class="btn secondary" id="gameToggle">try if u want lil bro</button>
+      </div>
+    </div>
+
+    <main class="stage">
+      <section class="tree-area">
+        <div class="tree">
+          <div class="star">★</div>
+          <div class="leaf leaf-1"></div>
+          <div class="leaf leaf-2"></div>
+          <div class="leaf leaf-3"></div>
+          <div class="trunk"></div>
+        </div>
+        <div class="gifts">
+          <div class="gift g1"></div>
+          <div class="gift g2"></div>
+          <div class="gift g3"></div>
+        </div>
+      </section>
+
+      <section class="message">
+        <p>Follow the holiday routes — explore, enjoy, and be safe!</p>
+      </section>
+    </main>
+
+    <!-- Clickable village navigation (Home removed, game accessed via button) -->
+    <section class="village" aria-label="Village navigation">
+      <a href="/christmas-facts" title="Christmas Fun Facts">
+        <div class="house" role="button">
+          <div class="roof"></div>
+          <div class="door"></div>
+          <div class="label">Fun Facts</div>
+        </div>
+      </a>
+
+      <a href="/mr-castro" title="Mr. Castro story">
+        <div class="house" role="button">
+          <div class="roof"></div>
+          <div class="door"></div>
+          <div class="label">Mr. Castro</div>
+        </div>
+      </a>
+    </section>
+
+    <!-- Wack-a-mole game area (hidden until toggled) -->
+    <section id="wacka" class="game" aria-hidden="true" hidden>
+      <div class="game-header">
+        <h2>Wack-a-Mole — Score: <span id="score">0</span> <span class="timer">Time: <span id="time">20</span>s</span></h2>
+        <div class="game-controls">
+          <button class="btn" id="startBtn">Start</button>
+          <button class="btn secondary" id="closeGame">Close</button>
+        </div>
+      </div>
+      <div class="grid" id="grid">
+        <!-- 9 holes -->
+        <div class="hole" data-index="0"></div>
+        <div class="hole" data-index="1"></div>
+        <div class="hole" data-index="2"></div>
+        <div class="hole" data-index="3"></div>
+        <div class="hole" data-index="4"></div>
+        <div class="hole" data-index="5"></div>
+        <div class="hole" data-index="6"></div>
+        <div class="hole" data-index="7"></div>
+        <div class="hole" data-index="8"></div>
+      </div>
+      <p class="note">Click the moles as they pop up! Game lasts 20 seconds.</p>
+    </section>
+
+    <div class="snow" aria-hidden="true">
+      <!-- multiple snowflakes for a nice effect -->
+      <span class="flake" style="--i:1;"></span>
+      <span class="flake" style="--i:2;"></span>
+      <span class="flake" style="--i:3;"></span>
+      <span class="flake" style="--i:4;"></span>
+      <span class="flake" style="--i:5;"></span>
+      <span class="flake" style="--i:6;"></span>
+      <span class="flake" style="--i:7;"></span>
+      <span class="flake" style="--i:8;"></span>
+      <span class="flake" style="--i:9;"></span>
+      <span class="flake" style="--i:10;"></span>
+      <span class="flake" style="--i:11;"></span>
+      <span class="flake" style="--i:12;"></span>
+      <span class="flake" style="--i:13;"></span>
+      <span class="flake" style="--i:14;"></span>
+      <span class="flake" style="--i:15;"></span>
+    </div>
+
+    <footer class="footer">© Holiday Routes — Merry Christmas!</footer>
+  </div>
+  <script>
+    // Wack-a-mole game logic
+    (function(){
+      const gameToggle = document.getElementById('gameToggle');
+      const wacka = document.getElementById('wacka');
+      const startBtn = document.getElementById('startBtn');
+      const closeBtn = document.getElementById('closeGame');
+      const grid = document.getElementById('grid');
+      const scoreEl = document.getElementById('score');
+      const timeEl = document.getElementById('time');
+      let score = 0;
+      let timeUp = false;
+      let countdown = 20; // seconds
+      let countdownTimer = null;
+
+      function randTime(min,max){ return Math.round(Math.random()*(max-min)+min) }
+      function randomHole(holes){ return holes[Math.floor(Math.random()*holes.length)] }
+
+      function peep(){
+        const holes = Array.from(grid.querySelectorAll('.hole'));
+        const time = randTime(400,900);
+        const hole = randomHole(holes);
+        let mole = hole.querySelector('.mole');
+        if(!mole){ mole = document.createElement('div'); mole.className='mole'; hole.appendChild(mole) }
+        mole.classList.add('up');
+        setTimeout(()=>{ mole.classList.remove('up'); if(!timeUp) peep() }, time);
+      }
+
+      // simple sound using WebAudio
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      const audioCtx = AudioCtx ? new AudioCtx() : null;
+      function playBeep(type='pop'){
+        if(!audioCtx) return;
+        const o = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        o.connect(g); g.connect(audioCtx.destination);
+        if(type==='pop'){ o.type='square'; o.frequency.value=900; g.gain.setValueAtTime(0.0001,audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.4,audioCtx.currentTime+0.005); g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+0.14); }
+        if(type==='start'){ o.type='sine'; o.frequency.value=600; g.gain.setValueAtTime(0.0001,audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.25,audioCtx.currentTime+0.01); g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+0.2); }
+        if(type==='end'){ o.type='sawtooth'; o.frequency.value=300; g.gain.setValueAtTime(0.0001,audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.35,audioCtx.currentTime+0.01); g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+0.5); }
+        o.start(); o.stop(audioCtx.currentTime+0.5);
+      }
+
+      function startGame(){
+        score = 0; scoreEl.textContent = 0; timeUp = false; countdown = 20; timeEl.textContent = countdown; startBtn.disabled = true;
+        playBeep('start');
+        peep();
+        countdownTimer = setInterval(()=>{
+          countdown -= 1; timeEl.textContent = countdown;
+          if(countdown <= 0){ clearInterval(countdownTimer); timeUp = true; startBtn.disabled = false; playBeep('end') }
+        },1000);
+      }
+
+      grid.addEventListener('click', (e)=>{
+        if(!e.target.classList.contains('mole')) return;
+        score += 1; scoreEl.textContent = score;
+        e.target.classList.remove('up');
+        playBeep('pop');
+      });
+
+      gameToggle.addEventListener('click', ()=>{
+        wacka.hidden = false; wacka.removeAttribute('aria-hidden');
+        wacka.scrollIntoView({behavior:'smooth'});
+      });
+
+      startBtn.addEventListener('click', startGame);
+      closeBtn.addEventListener('click', ()=>{ wacka.hidden = true; wacka.setAttribute('aria-hidden','true') });
+    })();
+  </script>
+</body>
+</html>

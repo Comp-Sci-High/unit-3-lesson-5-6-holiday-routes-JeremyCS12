@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Christmas Fun Facts</title>
+  <link rel="stylesheet" href="christmas.css">
+  <style>
+    .facts-wrap{max-width:880px;margin:2rem auto;padding:1rem}
+    .fact-card{background:rgba(255,255,255,0.03);padding:14px 18px;border-radius:10px;margin:12px 0;box-shadow:0 6px 18px rgba(2,6,23,0.5)}
+    .controls{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+    .btn{background:var(--accent);color:#07132a;padding:8px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:600}
+    .btn.secondary{background:#fff1cc}
+    .random{font-size:1.05rem}
+  </style>
+</head>
+<body>
+  <div class="sky">
+    <header class="header">
+      <h1>Christmas Fun Facts</h1>
+      <p class="sub">Surprising, historical, and joyful — learn something new!</p>
+    </header>
+
+    <main class="facts-wrap">
+      <div class="controls">
+        <button class="btn random" id="randomBtn">Surprise me 🎁</button>
+        <button class="btn secondary" id="showAllBtn">Show all facts</button>
+        <a class="btn" href="christmas.html">Back to Holiday Page</a>
+        <a class="btn secondary" href="index.html">Site Home</a>
+      </div>
+
+      <div id="factArea">
+        <!-- facts are injected here -->
+      </div>
+
+    </main>
+
+    <footer class="footer">© Holiday Routes — Fun Facts</footer>
+  </div>
+
+  <script>
+    const facts = [
+      "The tradition of the Christmas tree originated in Germany in the 16th century.",
+      "The poem 'A Visit from St. Nicholas' (also known as 'Twas the Night Before Christmas') popularized many modern image of Santa Claus.",
+      "In Japan, eating KFC for Christmas has become a popular tradition since the 1970s.",
+      "The world's largest Christmas stocking measured over 168 feet long and was created in Italy.",
+      "Rudolph the Red-Nosed Reindeer was created in 1939 as part of a department store promotion.",
+      "Tinsel was originally made of real silver before cheaper alternatives were invented.",
+      "The poinsettia flower was introduced to the U.S. from Mexico by Joel Poinsett in the 1820s.",
+      "In some parts of Europe, Christmas is celebrated on December 24th with the main family meal.",
+      "The song 'Jingle Bells' was originally written for Thanksgiving, not Christmas.",
+      "Many cultures have their own gift-bringer figures; Santa Claus's modern form blends St. Nicholas, Father Christmas, and other folk figures."
+    ];
+
+    const factArea = document.getElementById('factArea');
+    const randomBtn = document.getElementById('randomBtn');
+    const showAllBtn = document.getElementById('showAllBtn');
+
+    function showFact(index){
+      factArea.innerHTML = '';
+      const card = document.createElement('div');
+      card.className = 'fact-card';
+      card.textContent = facts[index];
+      factArea.appendChild(card);
+    }
+
+    function showAll(){
+      factArea.innerHTML = '';
+      facts.forEach((f)=>{
+        const card = document.createElement('div');
+        card.className = 'fact-card';
+        card.textContent = f;
+        factArea.appendChild(card);
+      });
+    }
+
+    randomBtn.addEventListener('click', ()=>{
+      const i = Math.floor(Math.random()*facts.length);
+      showFact(i);
+    });
+
+    showAllBtn.addEventListener('click', ()=>{
+      showAll();
+    });
+
+    // show a random fact on load
+    showFact(Math.floor(Math.random()*facts.length));
+  </script>
+</body>
+</html>
