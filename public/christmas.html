@@ -13,6 +13,8 @@
 </head>
 <body>
   <div class="sky">
+    <canvas id="santaCanvas" aria-hidden="true"></canvas>
+    <canvas id="confettiCanvas" aria-hidden="true"></canvas>
     <div class="header">
       <h1>Happy Holidays</h1>
       <p class="sub">Wishing you warm journeys and snowy smiles</p>
@@ -64,8 +66,12 @@
 
     <!-- Wack-a-mole game area (hidden until toggled) -->
     <section id="wacka" class="game" aria-hidden="true" hidden>
-      <div class="game-header">
+        <div class="game-header">
         <h2>Wack-a-Mole — Score: <span id="score">0</span> <span class="timer">Time: <span id="time">20</span>s</span></h2>
+        <div style="margin-left:12px;display:flex;gap:8px;align-items:center">
+          <button class="btn" id="musicToggle">music: off</button>
+          <div style="color:#fff;font-weight:700">Best: <span id="bestScore">0</span></div>
+        </div>
         <div class="game-controls">
           <button class="btn" id="startBtn">Start</button>
           <button class="btn secondary" id="closeGame">Close</button>
@@ -107,6 +113,7 @@
 
     <footer class="footer">© Holiday Routes — Merry Christmas!</footer>
   </div>
+  <script src="extras.js"></script>
   <script>
     // Wack-a-mole game logic
     (function(){
@@ -155,7 +162,16 @@
         peep();
         countdownTimer = setInterval(()=>{
           countdown -= 1; timeEl.textContent = countdown;
-          if(countdown <= 0){ clearInterval(countdownTimer); timeUp = true; startBtn.disabled = false; playBeep('end') }
+          if(countdown <= 0){
+            clearInterval(countdownTimer);
+            timeUp = true; startBtn.disabled = false; playBeep('end');
+            // check and persist best score
+            try{
+              const best = parseInt(localStorage.getItem('hol_best') || '0',10);
+              if(score > best){ localStorage.setItem('hol_best', String(score)); if(window.triggerConfetti) window.triggerConfetti(); if(window.updateBestScoreUI) window.updateBestScoreUI(); }
+              if(window.updateBestScoreUI) window.updateBestScoreUI();
+            }catch(e){/* ignore */}
+          }
         },1000);
       }
 

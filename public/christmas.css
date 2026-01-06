@@ -17,6 +17,10 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, Arial, sans-serif;c
   display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:3rem 1rem;
 }
 
+/* canvas overlays */
+#santaCanvas{position:fixed;left:0;top:0;width:100%;height:84px;pointer-events:none;z-index:3}
+#confettiCanvas{position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:4}
+
 .header{ text-align:center; margin-top:0.5rem }
 .header h1{font-size:clamp(2rem,4vw,4rem);margin:0 0 0.25rem;color:#fff;text-shadow:0 4px 20px rgba(0,0,0,0.6)}
 .header .sub{margin:0;color:#d8eef9;opacity:0.9}
@@ -46,6 +50,9 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, Arial, sans-serif;c
 
 /* timer display */
 .timer{font-weight:800;color:var(--accent);margin-left:14px}
+
+/* music toggle */
+#musicToggle{background:#8bd3ff;color:#04212a;padding:6px 10px;border-radius:8px;border:none;font-weight:700}
 
 .stage{display:flex;flex:1;align-items:center;justify-content:center;width:100%;max-width:960px}
 
